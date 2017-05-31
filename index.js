@@ -1,6 +1,6 @@
 
 
-var core={
+module.exports = {
     Config:require('./kaman.config'),
     Functions:require('./kaman.functions'),
     //Model:require('./kapp.model.js'),
@@ -12,5 +12,3 @@ var core={
     
 
 };
-window.core=core
-module.exports = core;
