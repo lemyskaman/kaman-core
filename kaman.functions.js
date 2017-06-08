@@ -46,7 +46,12 @@ function addReplaceableRegions(subjet) {
     _.each(subjet.replaceableRegions, function (v, k) {
         this.addRegion(k, { el: v, replaceElement: true })
     }, subjet)
+    console.log('add replaceable regions ', subjet.name)
 }
+
+
+
+
 
 /**
  * utility function to provide language value from keys 
@@ -60,7 +65,7 @@ function lang(key, source) {
     //first we retrive the lang value of the root of the DOM
     var LANG = document.documentElement.lang;
 
-    if (_.isObject(source) && _.isString(source[LANG][key])) {
+    if (_.isObject(source[LANG]) && _.isString(source[LANG][key])) {
         return source[LANG][key]
     } else {
         return key
@@ -97,6 +102,7 @@ function checkName(subject) {
 module.exports = {
     lang: lang,
     checkName: checkName,
+
     addReplaceableRegions: addReplaceableRegions,
     backboneOptsAsProps: backboneOptsAsProps,
     omitBackboneOptsAsProps: omitBackboneOptsAsProps
