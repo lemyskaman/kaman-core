@@ -65,7 +65,7 @@ function lang(key, source) {
     //first we retrive the lang value of the root of the DOM
     var LANG = document.documentElement.lang;
 
-    if (_.isObject(source[LANG]) && _.isString(source[LANG][key])) {
+    if (_.isObject(source) &&  _.isObject(source[LANG]) && _.isString(source[LANG][key])) {
         return source[LANG][key]
     } else {
         return key

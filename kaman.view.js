@@ -21,13 +21,13 @@ var KappView = Marionette.View.extend({
         //as backbone has its on method to add model and collection to views we just
         //avoid to merge it to the object by this way
         var opts = _.omit(this.options, ['model', 'collection'])
-        this.mergeOptions(this.options,opts)
+        this.mergeOptions(this.options,_.keys(opts))
 
         //ccreating replaceable regions
         _.each(this.replaceableRegions, function (v, k) {
             this.addRegion(k, {el: v, replaceElement: true})
         }, this)
-
+        console.log(this.name,this.langSource)
         return this
     },
     PkappInit: function () {
@@ -40,9 +40,9 @@ var KappView = Marionette.View.extend({
 
     },
     initialize: function () {
-        console.log(this.lang('lemys'))
+       
         this.kappInit()
-
+        
     }
 
 
