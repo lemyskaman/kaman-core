@@ -15,7 +15,7 @@ var KappView = Marionette.View.extend({
     lang: function (key) {
         return kamanFunctions.lang(key, this.langSource);
     },
-    model: new Backbone.Model({}),
+    
 
     kappInit: function () {
         //as backbone has its on method to add model and collection to views we just
@@ -27,7 +27,7 @@ var KappView = Marionette.View.extend({
         _.each(this.replaceableRegions, function (v, k) {
             this.addRegion(k, {el: v, replaceElement: true})
         }, this)
-        console.log(this.name,this.langSource)
+
         return this
     },
     PkappInit: function () {
@@ -40,9 +40,10 @@ var KappView = Marionette.View.extend({
 
     },
     initialize: function () {
-       
-        this.kappInit()
-        
+
+        this.kappInit();
+
+
     }
 
 
