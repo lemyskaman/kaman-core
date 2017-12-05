@@ -12,36 +12,50 @@ var KappView = Marionette.View.extend({
     kind: 'kappView',
 
     langSource: {},
+
+    extraInit: function () {}, //must be a function
     lang: function (key) {
         return kamanFunctions.lang(key, this.langSource);
     },
-    
 
-    kappInit: function () {
-        //as backbone has its on method to add model and collection to views we just
-        //avoid to merge it to the object by this way
-        var opts = _.omit(this.options, ['model', 'collection'])
-        this.mergeOptions(this.options,_.keys(opts))
+    /**
+     * A shortway to add regions with replaceElement option set to true
+     * form a replaceableRegions object on a marionette Views
+     * @param subject Marionette.View 
+     * @return void 
+     */
+    _addReplaceableRegions: function () {
 
-        //ccreating replaceable regions
+
         _.each(this.replaceableRegions, function (v, k) {
             this.addRegion(k, {el: v, replaceElement: true})
         }, this)
-
-        return this
     },
-    PkappInit: function () {
-        return kamanFunctions.omitBackboneOptsAsProps(this, ['model', 'collection'])
-            //.then(kamanFunctions.checkName)
-            .then(kamanFunctions.addReplaceableRegions)
-            .then(function () {
-                kamanFunctions.checkName(this)
-            }.bind(this))
+     /**
+     * this is whatmakes special to a Kaman Object this constructor method
+     * where some things are fired and added to "this"
+     * @return void 
+     */
+    kappInit: function (callback) {
 
+        //as backbone has its owne method to bind a model and collections to views we just
+        //avoid to merge it to the object atributes by this way
+        kamanFunctions.omitBackboneOptsAsProps(this, ['model', 'collection'])
+        //giving the replaceable regions to the view
+        this._addReplaceableRegions();
+        
+        if (typeof callback === "function"){
+            callback()
+        }
+
+        
     },
+
     initialize: function () {
 
         this.kappInit();
+
+
 
 
     }

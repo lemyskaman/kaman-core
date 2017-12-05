@@ -1,6 +1,7 @@
 
 
 var Promise = require('bluebird');
+var _  = require('underscore');
 
 /** 
 * It takes a Backbone Object as subject and return a promise of
@@ -14,11 +15,9 @@ function backboneOptsAsProps(subject, opts) {
         opts = subject.options
     }
     return new Promise(function (resolve) {
-        //we turn in object property all the opt
-        _.each(opts, function (value, key, list) {
-            subject[key] = value;
-        }, subject)
+        //we turn in object property all the elements in options 
 
+        subject.mergeOptions(subject.options, _.keys(opts))
 
         resolve(subject)
     }).bind(subject)
@@ -32,60 +31,33 @@ function backboneOptsAsProps(subject, opts) {
 * @return Promise
 */
 function omitBackboneOptsAsProps(subject, omit) {
+
     return backboneOptsAsProps(subject, _.omit(subject.options, omit)).bind(subject)
 }
 
 
-/**
- * A shortway to add regions with replaceElement option set to true
- * form a replaceableRegions object on a marionette Views
- * @param subject Marionette.View 
- * @return void 
- */
-function addReplaceableRegions(subjet) {
-    _.each(subjet.replaceableRegions, function (v, k) {
-        this.addRegion(k, { el: v, replaceElement: true })
-    }, subjet)
-    console.log('add replaceable regions ', subjet.name)
-}
-
-
 
 
 
 /**
- * utility function to provide language value from keys 
- * on a languageSource object acording some DOM element with 
- * a language value
+ * utility function to get the language value from keys 
+ * on a languageSource object acording the specified language
+ * comming from the server and placed in the 
  * @param key String, the key to search of
- * @param source Object, the object to search for the key
- * @return string, the key as string if it is not in source to returns its value
+ * @param source Object, the list to search for the key
+ * @return string, the key value if it is in the source list, otherwise will retrun the key name 
  */
 function lang(key, source) {
     //first we retrive the lang value of the root of the DOM
     var LANG = document.documentElement.lang;
-
+    //console.log(source)
+    //console.log(LANG+' '+key+' - '+source[LANG][key]);
     if (_.isObject(source) &&  _.isObject(source[LANG]) && _.isString(source[LANG][key])) {
         return source[LANG][key]
     } else {
         return key
     }
 
-
-    /* if (source) {
-         if (typeof source[LANG] === "object") {
-             if (typeof source[LANG][key] === "string") {
-                 return source[LANG][key]
-             } else {
-                 return key
-             }
-
-         } else {
-             return key
-         }
-     } else {
-         return key
-     }*/
 }
 
 function checkName(subject) {
@@ -99,11 +71,29 @@ function checkName(subject) {
 
 }
 
+
+
+/**
+ * this function will iterate over each list elements  
+ * setting the one on key to true an all other on false 
+ * @param key String, the key to set as true
+ * @param list Object, the object to search for the key to set to true
+ * @return void
+ */
+function commutate(key,list){
+    _.each(list,function(v,k,l){
+        if (k===key){
+            l[key]=true
+        }
+        if (v===true && k!==key){
+            l[k]=false
+        }
+    })
+}
+
 module.exports = {
     lang: lang,
     checkName: checkName,
-
-    addReplaceableRegions: addReplaceableRegions,
     backboneOptsAsProps: backboneOptsAsProps,
     omitBackboneOptsAsProps: omitBackboneOptsAsProps
 }
