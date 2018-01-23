@@ -9,6 +9,7 @@ module.exports = {
     //SearchAbleCollection:require('./kapp.searchable.collection'),
     View:require('./kaman.view'),
     CollectionView:require('./kapp.collection.view'),
+    Behavior:require('./kaman.behavior.js')
     
     
 

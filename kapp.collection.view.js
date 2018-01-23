@@ -1,5 +1,5 @@
 var Marionette = require('backbone.marionette');
-
+var kamanFunctions = require('./kaman.functions');
 var core = require('kaman-core')
 
 
@@ -11,17 +11,19 @@ var KappCollectionView = Marionette.CollectionView.extend({
         return kamanFunctions.lang(key, this.langSource);
     },
 
-    kappInit: function () {
-        //as backbone has its own method to add a model and a collection to views we just
-        //avoid to merge it to the object by this way
-        var opts = _.omit(this.options, ['model', 'collection'])
-        this.mergeOptions(this.options, _.keys(opts))
-
-    },
+    kappInit: function () { kamanFunctions.kappInit(this) },
     initialize: function () {
 
         this.kappInit();
+    },
+    exposeAs(name) {
 
+        try {
+            kamanFunctions.expose(this, name)
+        }
+        catch (err) {
+            console.error(err)
+        }
 
     }
 });
